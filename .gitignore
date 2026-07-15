@@ -214,3 +214,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+*.pyc
+media/
+static/
+.DS_Store
+.vscode/" > .gitignore
+staticfiles/
+staticfiles
