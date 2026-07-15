@@ -44,6 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     is_active = models.BooleanField(default=True, verbose_name="Активен")
     is_verified = models.BooleanField(default=False, verbose_name="Подтвержден")
+    is_staff = models.BooleanField(default=False, verbose_name='Персонал')
 
     date_joined = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата регистрации"
