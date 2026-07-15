@@ -1,7 +1,9 @@
-import random
 import logging
+import random
 import time
+
 from users.models import CustomUser
+
 from .redis_client import redis_client
 
 logger = logging.getLogger(__name__)
@@ -59,9 +61,9 @@ class AuthService:
         user, created = CustomUser.objects.get_or_create(
             phone_number=phone_number,
             defaults={
-                'is_active': True,
-                'is_verified': False,
-            }
+                "is_active": True,
+                "is_verified": False,
+            },
         )
 
         if created:

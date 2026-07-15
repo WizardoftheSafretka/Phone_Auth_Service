@@ -1,5 +1,6 @@
-from django.contrib.auth.models import BaseUserManager
 import re
+
+from django.contrib.auth.models import BaseUserManager
 
 
 class CustomUserManager(BaseUserManager):
@@ -10,13 +11,13 @@ class CustomUserManager(BaseUserManager):
         Создание обычного пользователя с автоматической генерацией инвайт-кода
         """
         if not phone_number:
-            raise ValueError('Номер телефона обязателен')
+            raise ValueError("Номер телефона обязателен")
 
         phone_number = self.normalize_phone_number(phone_number)
 
         # Устанавливаем значения по умолчанию
-        extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_verified', False)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_verified", False)
 
         user = self.model(phone_number=phone_number, **extra_fields)
 
@@ -37,15 +38,15 @@ class CustomUserManager(BaseUserManager):
         """
         Создание суперпользователя
         """
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('is_verified', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_verified", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Суперпользователь должен иметь is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Суперпользователь должен иметь is_superuser=True.')
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Суперпользователь должен иметь is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Суперпользователь должен иметь is_superuser=True.")
 
         return self.create_user(phone_number, password, **extra_fields)
 
@@ -54,9 +55,9 @@ class CustomUserManager(BaseUserManager):
         Нормализация номера телефона: удаление пробелов и спецсимволов,
         добавление + если отсутствует
         """
-        cleaned = re.sub(r'[\s\-\(\)]', '', phone_number)
-        if not cleaned.startswith('+'):
-            cleaned = '+' + cleaned
+        cleaned = re.sub(r"[\s\-\(\)]", "", phone_number)
+        if not cleaned.startswith("+"):
+            cleaned = "+" + cleaned
         return cleaned
 
     def get_by_invite_code(self, invite_code):
@@ -71,8 +72,10 @@ class CustomUserManager(BaseUserManager):
         Получение пользователя с предзагрузкой связанных данных для профиля
         """
         try:
-            return self.select_related('activated_invite_code').prefetch_related('invited_users').get(
-                phone_number=phone_number
+            return (
+                self.select_related("activated_invite_code")
+                .prefetch_related("invited_users")
+                .get(phone_number=phone_number)
             )
         except self.model.DoesNotExist:
             return None
