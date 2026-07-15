@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <div class="icon-user">👤</div>
+    <h1 class="h3">Мой профиль</h1>
+</div>
+
+<div class="profile-card">
+    <p><strong>📱 Телефон:</strong> {{ profile.phone_number }}</p>
+    <p>
+        <strong>🎫 Ваш инвайт-код:</strong>
+        <span class="invite-code-display">{{ profile.invite_code }}</span>
+    </p>
+    <p>
+        <strong>Активированный код:</strong>
+        {% if profile.activated_invite_code %}
+            <span class="badge badge-success">{{ profile.activated_invite_code }}</span>
+        {% else %}
+            <span class="text-muted">Не активирован</span>
+        {% endif %}
+    </p>
+    <p><strong>📅 Дата регистрации:</strong> {{ profile.date_joined|date:"d.m.Y H:i" }}</p>
+</div>
+
+{% if profile.invited_users %}
+<div class="profile-card">
+    <p><strong>👥 Приглашенные ({{ profile.invited_users|length }}):</strong></p>
+    <ul class="invited-list">
+        {% for phone in profile.invited_users %}
+            <li>
+                <span>📱 {{ phone }}</span>
+                <span class="badge badge-primary">Приглашен</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% if not profile.activated_invite_code %}
+<div class="profile-card">
+    <p><strong>🎯 Активировать инвайт-код</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="flex gap-2">
+            <input type="text"
+                   class="form-control"
+                   name="invite_code"
+                   placeholder="Введите 6-значный код"
+                   maxlength="6"
+                   required>
+            <button type="submit" class="btn btn-primary">
+                Активировать
+            </button>
+        </div>
+        <small class="text-muted">Введите инвайт-код другого пользователя</small>
+    </form>
+</div>
+{% endif %}
+
+<div class="flex gap-2 mt-4">
+    <a href="{% url 'login' %}" class="btn btn-outline-secondary flex-fill">
+        🏠 На главную
+    </a>
+    <a href="{% url 'logout' %}" class="btn btn-outline-danger flex-fill">
+        🚪 Выйти
+    </a>
+</div>
+{% endblock %}

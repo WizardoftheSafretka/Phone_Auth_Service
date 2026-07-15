@@ -6,14 +6,14 @@ from .models import CustomUser
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     list_display = ('phone_number', 'invite_code', 'is_verified', 'is_active')
-    list_filter = ('is_verified', 'is_active', 'is_staff', 'is_superuser')
+    list_filter = ('is_verified', 'is_active')
     search_fields = ('phone_number', 'invite_code')
     ordering = ('-date_joined',)
 
     fieldsets = (
         (None, {'fields': ('phone_number', 'password')}),
         ('Инвайт-коды', {'fields': ('invite_code', 'activated_invite_code')}),
-        ('Статусы', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_verified')}),
+        ('Статусы', {'fields': ('is_active', 'is_superuser', 'is_verified')}),
         ('Даты', {'fields': ('last_login', 'date_joined')}),
     )
 
