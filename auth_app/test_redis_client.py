@@ -45,5 +45,4 @@ class MockRedisClient:
         self.data.pop(key, None)
 
 
-
 mock_redis = MockRedisClient()

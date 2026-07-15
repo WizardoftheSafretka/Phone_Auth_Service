@@ -30,4 +30,4 @@ if not CustomUser.objects.filter(phone_number='+79999999999').exists():
 PYTHON_EOF
 
 echo "Starting server..."
-exec gunicorn --bind 0.0.0.0:8000 app.wsgi:application
+exec gunicorn --bind 0.0.0.0:8000 config.wsgi:application
